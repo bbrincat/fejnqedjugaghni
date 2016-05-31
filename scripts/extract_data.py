@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 import json
 from redis import StrictRedis
-redis = StrictRedis()
+redis = StrictRedis(host="54.72.22.79")
 
 # get only nouns, and leave out verb derived nouns
 select = {"pos": "NOUN", "form": {"$ne": "verbalnoun"}}
@@ -16,19 +16,19 @@ query = [
             "from": "wordforms",
             "localField": "_id",
             "foreignField": "lexeme_id",
-            "as": "wordform"
+            "as": "wf"
         }
     }
 ]
 
 def word_details():
     client = MongoClient()
-    lex = client.gabra.db.lexemes
+    lex = client.gabra.lexemes
 
     cursor = lex.aggregate(query)
 
     for lexeme in cursor:
-        for wordform in lexeme['wordform']:
+        for wordform in lexeme['wf']:
             if not wordform.get("number"):
                 continue
             yield {"gender": wordform.get("gender"),
