@@ -6,4 +6,4 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return json.loads(redis.srandmember("words")["form"])
+    return json.loads(redis.srandmember("words"))["form"]
