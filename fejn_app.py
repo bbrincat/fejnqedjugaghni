@@ -6,4 +6,9 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return json.loads(redis.srandmember("words"))["form"]
+    random = redis.srandmember("words")
+    if random:
+        d= json.loads(random.decode(encoding='utf8'))
+        return d["form"]
+    else:
+        return ":("
