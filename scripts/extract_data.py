@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 import json
 from redis import StrictRedis
-redis = StrictRedis(host="54.72.22.79")
+redis = StrictRedis()
 
 # get only nouns, and leave out verb derived nouns
 select = {"pos": "NOUN", "form": {"$ne": "verbalnoun"}}

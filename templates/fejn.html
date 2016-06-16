@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type=text/css href="{{ url_for('static', filename='fejn.css') }}">
+    <script src="{{url_for('static', filename='jquery-3.0.0.min.js')}}"></script>
+       <script>
+
+
+    $(document).ready(function(){
+       $("button").click(function(){
+            $.ajax({url: "phrase",dataType:'json', success: function(result){
+                $("#phrase").text(result["phrase"]);
+                $("#word").text(result["word"]);
+            }});
+        });
+    });
+
+
+    </script>
+</head>
+<body>
+
+<div class="vertical-center bg">
+    <div class="container">
+        <div class="inner-container">
+
+            <div class="inner">
+                <div class="left">
+                    <div class="left-inner">
+                            <span>fejn qed jugaghni?</span>
+                    </div>
+                </div>
+                <button id="button" class="right bigbutton">
+                    <div class="right-inner">
+                        <span>Ghidli fejn!</span>
+                    </div>
+                </button>
+            </div>
+
+            <div class="inner inner-bottom">
+                <span id="phrase" class="text lefttext">{{ phrase }}</span><span id="word" class="text kelma">{{ word }}</span>
+            </div>
+
+
+        </div>
+    </div>
+   </div>
+
+
+</body>
+</html>
