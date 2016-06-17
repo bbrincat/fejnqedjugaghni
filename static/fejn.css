@@ -247,3 +247,13 @@ body {
 }
 
 
+.lower
+{
+    background-color: #09132e;
+    height: 100%;
+}
+
+.content{
+    background-color: white ;
+    height:25%;
+}
