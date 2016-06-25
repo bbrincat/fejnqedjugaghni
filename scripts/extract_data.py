@@ -2,7 +2,7 @@ from pymongo import MongoClient
 import json
 from redis import StrictRedis
 redis = StrictRedis()
-
+from uuid import uuid4
 # get only nouns, and leave out verb derived nouns
 select = {"pos": "NOUN", "form": {"$ne": "verbalnoun"}}
 
@@ -49,11 +49,15 @@ def write_to_mongo():
         db.kliem.insert({k: v for k, v in word.items() if v})
 
 
-def write_to_redis():
-    redis.delete("words")
-    for word in word_details():
-        redis.sadd("words", json.dumps(word))
 
+def write_to_redis():
+    # redis.delete("words")
+    for word in word_details():
+        id = int(uuid4())
+        redis.sadd("words_index", id)
+        redis.hset("words_hash", id ,json.dumps(word))
 
 if __name__ == "__main__":
     write_to_redis()
+
+

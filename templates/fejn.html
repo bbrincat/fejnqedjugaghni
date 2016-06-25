@@ -17,6 +17,8 @@
             $.ajax({url: "phrase",dataType:'json', success: function(result){
                 $("#phrase").text(result["phrase"]);
                 $("#word").text(result["word"]);
+                $("#gloss").text(result["gloss"]);
+
             }});
         });
     });
@@ -47,6 +49,9 @@
                 <span id="phrase" class="text lefttext">{{ phrase }}</span><span id="word" class="text kelma">{{ word }}</span>
             </div>
 
+            <div class="def">
+                <span class="defwordlabel"> defn.</span> <span id="gloss">{{ gloss }}</span>
+            </div>
 
         </div>
     </div>

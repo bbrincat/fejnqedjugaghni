@@ -1,6 +1,11 @@
-from flask import Flask, render_template
+from django.shortcuts import redirect
+from flask import Flask, render_template, send_from_directory, send_file
+from os import path
 from redis import StrictRedis
 import json
+
+from screenshot import generate_screenshot_file
+
 redis = StrictRedis()
 app = Flask(__name__)
 
@@ -40,28 +45,53 @@ def get_random_word():
     if random:
         d= json.loads(random.decode(encoding='utf8'))
         return  d
-        # print(d)
-        # return d["form"]
+
+def get_word_by_id():
+    word_info = redis.hget("words_hash", "key")
+    if word_info:
+        return json.loads(word_info.decode(encoding='utf8'))
+
 
 @app.route('/')
 def hello_world():
-     phrase, word = generate_phrase()
-     return render_template('fejn.html', phrase=phrase, word=word)
+    # random = redis.srandmember("words_index")
+    # random = "12321323"
+    # url = path.join("http://www.fejnqedjugaghni.com", "kelma", random)
+    # return redirect(url)
+     word_info = get_random_word()
+     phrase, word, gloss = generate_phrase(word_info)
+     return render_template('fejn.html', phrase=phrase, word=word, gloss=gloss)
 
-def generate_phrase():
-    word_info = get_random_word()
+def generate_phrase(word_info):
+
 
     word = word_info["form"]
     verb =  conjugate(word_info["number"],word_info["gender"])
     article,lehen = get_article(word)
 
-    return "qed {} {}".format(verb,article), lehen+word
+    return "qed {} {}".format(verb,article), lehen+word, word_info["gloss"].replace("\n", "; ")
 
 
 @app.route('/phrase')
 def phrase():
-    phrase, word = generate_phrase()
-    return json.dumps({"phrase": phrase, "word":word})
+    phrase, word, gloss = generate_phrase()
+    return json.dumps({"phrase": phrase, "word":word, "gloss":gloss})
+
+
+@app.route("/images/<pid>.jpg")
+def get_image(pid):
+    filename = path.join("static","images","{}.jpg".format(pid))
+    if not (path.exists(filename) and path.isfile(filename)):
+        generate_screenshot_file(filename, "http://www.fejnqedjugaghni.com", pid)
+    return send_file(filename)
+
+@app.route("/kelma/<id>")
+def render_word():
+    word_info = get_word_by_id(id)
+    phrase, word, gloss = generate_phrase(word_info)
+    return render_template('fejn.html', phrase=phrase, word=word, gloss=gloss)
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)

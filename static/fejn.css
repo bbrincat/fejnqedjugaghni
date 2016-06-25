@@ -154,6 +154,30 @@ body {
 
 }
 
+.def {
+    line-height: 2rem;
+    margin-top: 2rem;
+    background-color: black;
+    opacity: 0.86;
+    padding-left: 3em;
+    padding-right: 3em;
+
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    font-family: Serif;
+    font-size: 1.2rem;
+    color:white;
+
+}
+.defword{
+    font-family: Aileron-SemiBold;
+
+}
+
+.defwordlabel{
+    font-style: italic;
+}
+
 .text {
     font-family: Aileron-SemiBold;
     line-height: 7rem;
