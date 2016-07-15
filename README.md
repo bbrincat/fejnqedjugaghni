@@ -1,3 +1,3 @@
 # fejnqedjugaghni
 
-www.fenqedjugaghni.com
+www.fejnqedjugaghni.com
